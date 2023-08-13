@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <h1> Working with web workers</h1>
+    <script>
+        const worker = new Worker('worker.js');
+        worker.postMessage('Hello!');
+
+        worker.addEventListener('message',function(e){
+            console.log(e.data);
+        });
+    </script>
+</html>

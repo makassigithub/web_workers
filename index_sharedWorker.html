@@ -1,0 +1,22 @@
+<html>
+<head>
+  <title>Shared Worker Example</title>
+</head>
+<body>
+  <button id="sendMessage">Send Message to Shared Worker</button>
+  <script>
+    var sharedWorker = new SharedWorker('sharedWorker.js');
+    var port = sharedWorker.port;
+    
+    document.getElementById('sendMessage').addEventListener('click', function () {
+      var message = 'Hello from main thread!';
+      port.postMessage(message);
+    });
+
+    port.onmessage = function (event) {
+      var message = event.data;
+      console.log('Received: ' + message);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <h1> Working with web workers</h1>
+    <script>
+        const worker = new Worker('worker_functions.js');
+        worker.postMessage({
+            type:'add',
+            args:[5,5]
+        });
+
+        worker.postMessage({
+            type:'substract',
+            args:[10,5]
+        })
+
+        worker.addEventListener('message',function(e){
+            console.log(e.data);
+        })
+    </script>
+</html>

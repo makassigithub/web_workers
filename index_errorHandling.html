@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <h1> Working with web workers</h1>
+    <script>
+        const worker = new Worker('worker_errorHandling.js');
+        worker.addEventListener('message',function(e){
+            if(e.data.isError){
+                console.log(e.data.error);
+            }else{
+                console.log(e.data.value);
+            }
+        })
+
+        worker.postMessage(
+            [5,5]
+        );
+
+        worker.postMessage(
+            [5]
+        );
+
+        /* Handling exception on the main context does not prevent
+         the worker from crashing
+
+        worker.addEventListener('error',function(e){
+            console.log('Oops!',e);
+        })
+        */
+
+    </script>
+</html>

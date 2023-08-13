@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <h1> Working with web workers</h1>
+    <script>
+        let worker = new Worker('worker_correlation.js'),
+        callbacks = {};
+        nextCorrelationId = 1;
+
+        worker.addEventListener('message',function(e){
+            if(callbacks[e.data.correlationId]){
+               callbacks[e.data.correlationId](e.data.result);
+               delete callbacks[e.data.correlationId];
+            }
+        })
+
+        let msg = {
+            type:"add",
+            args:[5,5],
+            correlationId: nextCorrelationId++
+        };
+        
+        callbacks[msg.correlationId] = (function(msg){
+            return function(result){
+                console.log('the result of add with args ',msg.args, ' is', result);
+            }
+        })(msg)
+
+         worker.postMessage(msg);
+
+         msg = {
+            type:"substract",
+            args:[9,5],
+            correlationId: nextCorrelationId++
+         };
+        
+         callbacks[msg.correlationId] = (function(msg){
+            return function(result){
+                console.log('the result of substract with args ',msg.args, ' is', result);
+            }
+         })(msg)
+
+         worker.postMessage(msg);
+
+    </script>
+</html>
